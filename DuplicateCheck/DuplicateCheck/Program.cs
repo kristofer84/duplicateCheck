@@ -1,4 +1,6 @@
-﻿using System;
+﻿//https://social.msdn.microsoft.com/Forums/vstudio/en-US/237a294e-09ab-4dab-ba94-987992ca9c64/wanting-to-know-how-many-bytes-per-pixel-in-a-bitmap?forum=vbgeneral
+
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -48,23 +50,8 @@ namespace DuplicateCheck
 
                 var bitmap = ImageHelper.GetNormalizedImage(file.FullName, false);
 
-                //var dateTime = dateTaken?.ToLocalTime() ?? file.LastWriteTimeUtc.ToLocalTime();
-                var testc = (long)0;
-
-                for (int i = 0; i < 1000; i++)
-                {
-                    var sw0 = new Stopwatch();
-                    sw0.Start();
-                    var test = ImageHelper.GetHash2(bitmap);
-
-                    testc += sw0.ElapsedMilliseconds;
-                    
-                }
-                Console.WriteLine(testc/1000);
-                Console.ReadKey();
-
-                return;
-
+                //var test = ImageHelper.GetHash2(bitmap);
+                
                 var hashCode = ImageHelper.GetHash(bitmap);
 
                 var imageinfo = new ImageInfo(file.FullName, hashCode);

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace DuplicateCheck
 {
@@ -70,6 +73,25 @@ namespace DuplicateCheck
             return retArr;
         }
 
+        public static int[] GetHash2(Bitmap bmpSource)
+        {
+            var retArr = new int[4];
+            var bytes = GetBytes(bmpSource);
+            const short bytesPerPixel = 4;
+
+            short byteCounter = 0;
+            foreach (var b in bytes)
+            {
+                retArr[byteCounter] += b;
+
+                if (byteCounter++ == bytesPerPixel - 1)
+                {
+                    byteCounter = 0;
+                }
+            }
+            return retArr;
+        }
+        
         public static byte[] GetBytes(string filename)
         {
             var bitmap = GetNormalizedImage(filename, true);

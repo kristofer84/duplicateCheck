@@ -14,7 +14,6 @@ namespace DuplicateCheck
 {
     class Program
     {
-
         private static readonly ConcurrentDictionary<string, byte[]> ByteCache = new ConcurrentDictionary<string, byte[]>();
         private const double Tolerance = 0.001;
         private static readonly int ConsoleStart = Console.CursorTop;
@@ -23,8 +22,8 @@ namespace DuplicateCheck
         static void Main(string[] args)
         {
             //_path = args.Any() ? args[0] : @"C:\Users\Kristofer\Dropbox\Bilder\mobilbilder\2017";
-            //var path = args.Any() ? args[0] : @"C:\Users\Kristofer\Downloads\2016";
-            var path = args.Any() ? args[0] : @"C:\Users\Kristofer\Dropbox\Bilder\mobilbilder\2016";
+            var path = args.Any() ? args[0] : @"C:\Users\Kristofer\Downloads\2016";
+            //var path = args.Any() ? args[0] : @"C:\Users\Kristofer\Dropbox\Bilder\mobilbilder\2016";
             var manualCheck = args.Length > 1 ? bool.Parse(args[1]) : false;
 
             var dict = new ConcurrentDictionary<string, ConcurrentBag<ImageInfo>>();
@@ -38,7 +37,7 @@ namespace DuplicateCheck
 
             var count = 0;
 #if DEBUG
-            var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = 4 };
+            var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = 1 };
 #else
             var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = 4 };
 #endif
@@ -50,6 +49,22 @@ namespace DuplicateCheck
                 var bitmap = ImageHelper.GetNormalizedImage(file.FullName, false);
 
                 //var dateTime = dateTaken?.ToLocalTime() ?? file.LastWriteTimeUtc.ToLocalTime();
+                var testc = (long)0;
+
+                for (int i = 0; i < 1000; i++)
+                {
+                    var sw0 = new Stopwatch();
+                    sw0.Start();
+                    var test = ImageHelper.GetHash2(bitmap);
+
+                    testc += sw0.ElapsedMilliseconds;
+                    
+                }
+                Console.WriteLine(testc/1000);
+                Console.ReadKey();
+
+                return;
+
                 var hashCode = ImageHelper.GetHash(bitmap);
 
                 var imageinfo = new ImageInfo(file.FullName, hashCode);
